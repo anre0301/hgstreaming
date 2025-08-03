@@ -723,53 +723,63 @@ html, body {
       </div>
 
       <!-- Lado derecho -->
-      <div class="derecha">
-  <img src="https://dfzm.lat/assets/img/logosplatformas.png" alt="Ilustración Streaming" class="imagen-cuadrada">
-
-  <div class="texto-descriptivo">
-   <h3 class="animado-texto">
-  <span class="blanco">Full</span>
-  <span class="animada-palabra" id="palabra-cambia">Documentales</span>
-  <span class="blanco">para toda tu Familia</span>
-</h3>
-
-
-    <p class="descripcion-profesional">
-      Gracias a nuestra herramienta de consulta de correo electrónico podrás validar, recuperar, etc. los datos de tu cuenta de streaming.
-    </p>
+<div class="derecha">
+  <div class="container">
+    <h1>Buscar Código Netflix 📧</h1>
+    <div class="searchBox">
+      <input class="searchInput" type="text" id="palabra" placeholder="Buscar algo...">
+      <button class="searchButton" onclick="buscar()">
+        <i class="fas fa-search"></i>
+      </button>
+    </div>
+    <div id="resultado"></div>
   </div>
-</div>
 
   </section>
 
  <footer class="footer">
   <p class="copyright">© 2025 Derechos Reservados.</p>
 </footer>
+ <script>
+  async function buscar() {
+    const resultadoDiv = document.getElementById("resultado");
+    resultadoDiv.innerHTML = "Buscando...";
 
-  <script>
-  const palabras = ["Series", "Películas", "Documentales", "Novelas"];
-  let index = 0;
-  const palabra = document.getElementById("palabra-cambia");
+    try {
+      const res = await fetch("/buscar", {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ palabra: "Netflix" })  // Valor fijo para buscar sin input
+      });
 
-  setInterval(() => {
-    // animar hacia arriba y ocultar
-    palabra.style.transform = "translateY(-100%)";
-    palabra.style.opacity = "0";
+      const data = await res.json();
+      resultadoDiv.innerHTML = "";
 
-    setTimeout(() => {
-      // cambiar palabra
-      index = (index + 1) % palabras.length;
-      palabra.textContent = palabras[index];
+      if (data.error) {
+        resultadoDiv.innerText = "Error: " + data.error;
+        return;
+      }
 
-      // resetear animación y aparecer desde abajo
-      palabra.style.transform = "translateY(100%)";
+      const correo = data.correo;
+      if (!correo) {
+        resultadoDiv.innerText = data.mensaje || "No se encontró ningún correo.";
+        return;
+      }
 
-      setTimeout(() => {
-        palabra.style.transform = "translateY(0)";
-        palabra.style.opacity = "1";
-      }, 50);
-    }, 400);
-  }, 3000);
+      const div = document.createElement("div");
+      div.className = "card";
+      div.innerHTML = `
+        <div class="titulo">${correo.asunto}</div>
+        <div class="remitente">${correo.remitente}</div>
+        <div class="fecha">${correo.fecha}</div>
+        <div class="cuerpo">${correo.cuerpo_html}</div>
+      `;
+
+      resultadoDiv.appendChild(div);
+    } catch (error) {
+      resultadoDiv.innerText = "Ocurrió un error al buscar.";
+    }
+  }
 </script>
 </body>
 </html>

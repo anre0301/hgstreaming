@@ -31,6 +31,14 @@ def decodificar_header(texto):
 def index():
     return render_template('index.html')
 
+@app.route('/netflix')
+def netflix():
+    return render_template('netflix.html')
+@app.route('/')
+
+def inicio():
+    return render_template('index.html')
+
 @app.route('/buscar', methods=['POST'])
 def buscar():
     palabra_clave = request.json.get('palabra')
