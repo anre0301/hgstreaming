@@ -5,6 +5,7 @@
   <title>Buscar Código Netflix</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Iconos FontAwesome -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -404,14 +405,6 @@
   margin-bottom: 25px;
 }
 
-.imagen-cuadrada {
-  width: 100%;
-  max-width: 350px;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  border-radius: 10px;
-  border: 2px solid #742286;
-}
 
 .footer {
   text-align: center;
@@ -490,9 +483,14 @@
 }
 
 #palabra-cambia {
-  color: #e50914;
-  transition: color 0.3s ease;
+  display: inline-block;
+  transition: all 0.6s ease;
+  color: #007bff;
+  font-weight: bold;
+  opacity: 1;
+  transform: translateY(0);
 }
+
 
 .descripcion-profesional {
   font-size: 17px;
@@ -546,10 +544,6 @@ html, body {
     align-items: center;
   }
 
-  .imagen-cuadrada {
-    max-width: 90%;
-    height: auto;
-  }
 
   .derecha h3 {
     text-align: center;
@@ -630,9 +624,16 @@ html, body {
   }
 }
 
-.imagen-cuadrada {
+.imagen-rectangular {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  object-fit: contain;
+  border-radius: 12px;
+  border: none;
   animation: flotar 3s ease-in-out infinite;
 }
+
 
 @keyframes flotar {
   0%, 100% {
@@ -644,7 +645,64 @@ html, body {
 }
 
 
+@media (max-width: 768px) {
+  .botones {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+  }
 
+  .link-plataformas {
+    flex: 1;
+    min-width: auto;
+    padding: 10px 12px;
+    text-align: center;
+  }
+
+  .link-description {
+    display: none !important;
+  }
+
+  .tituloplataformas {
+    font-size: 12px;
+    margin: 0;
+  }
+
+  .url {
+    flex: 1;
+  }
+}
+
+  .texto-descriptivo {
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .animado-texto {
+    font-size: 2em;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .animada-palabra {
+    color: #007bff; /* azul profesional */
+    transition: all 0.4s ease-in-out;
+  }
+
+  .blanco {
+    color: white;
+  }
+
+  .descripcion-profesional {
+    font-size: 1rem;
+    color: #dddddd;
+    margin-top: 10px;
+    font-weight: 400;
+  }
   </style>
 </head>
 <body>
@@ -686,7 +744,7 @@ html, body {
       <div class="botones">
         <a href="{{ url_for('netflix') }}" class="url">
           <div class="link-plataformas animacionnetflix">
-            <h5 class="tituloplataformas">Netflix</h5>
+            <h5 class="tituloplataformas">NETFLIX</h5>
             <div class="link-description">
               <p class="description">Recupera tu código de acceso temporal.</p>
               <div class="icono-netflix">
@@ -698,9 +756,9 @@ html, body {
 
           <a href="#" class="url">
             <div class="link-plataformas animaciondisney">
-              <h5 class="tituloplataformas">Disney+</h5>
+              <h5 class="tituloplataformas">DISNEY+</h5>
               <div class="link-description">
-                <p class="description">Recupera Acceso único para Disney+ (Español o Inglés)</p>
+                <p class="description">Recupera Acceso único para Disney+</p>
                 <div class="icono-disney">
                   <i class="bi bi-stars"></i>
                 </div>
@@ -710,9 +768,9 @@ html, body {
 
           <a href="#" class="url">
             <div class="link-plataformas animacionprime">
-              <h5 class="tituloplataformas">Prime Video</h5>
+              <h5 class="tituloplataformas">PRIME VIDEO</h5>
               <div class="link-description">
-                <p class="description">Inicio de sesión en Amazon Prime Video (ES / EN)</p>
+                <p class="description">Inicio de sesión en Amazon Prime Video</p>
                 <div class="icono-prime">
                   <i class="bi bi-box-arrow-in-right"></i>
                 </div>
@@ -721,64 +779,66 @@ html, body {
           </a>
         </div>
       </div>
+	  
+
 
       <!-- Lado derecho -->
       <div class="derecha">
-  <img src="https://dfzm.lat/assets/img/logosplatformas.png" alt="Ilustración Streaming" class="imagen-cuadrada">
+  <img src="https://i.ibb.co/d4FLNZjx/Whats-App-Image-2025-08-02-at-10-40-55-PM-removebg-preview.png" alt="Ilustración Streaming" class="imagen-rectangular">
 
-  <div class="texto-descriptivo">
-   <h3 class="animado-texto">
-  <span class="blanco">Full</span>
-  <span class="animada-palabra" id="palabra-cambia">Documentales</span>
-  <span class="blanco">para toda tu Familia</span>
-</h3>
+<div class="texto-descriptivo">
+  <h3 class="animado-texto">
+    <span class="blanco">Full</span>
+    <span class="animada-palabra" id="palabra-cambia">Documentales</span>
+    <span class="blanco">para toda tu Familia</span>
+  </h3>
 
-
-    <p class="descripcion-profesional">
-      Gracias a nuestra herramienta de consulta de correo electrónico podrás validar, recuperar, etc. los datos de tu cuenta de streaming.
-    </p>
-  </div>
+  <p class="descripcion-profesional">
+    Gracias a nuestra herramienta de consulta de correo electrónico podrás validar, recuperar, etc. los datos de tu cuenta de streaming.
+  </p>
 </div>
 
   </section>
 
  <footer class="footer">
-  <p class="copyright">© 2025 Derechos Reservados.</p>
+  <p class="copyright">© 2025 Derechos Reservados (@SERVICIOSALBER).</p>
 </footer>
 
-  <script>
+<script>
   const palabras = ["Series", "Películas", "Documentales", "Novelas"];
   let index = 0;
   const palabra = document.getElementById("palabra-cambia");
 
-  setInterval(() => {
-    // animar hacia arriba y ocultar
-    palabra.style.transform = "translateY(-100%)";
+  function cambiarPalabra() {
+    // animar salida
     palabra.style.opacity = "0";
+    palabra.style.transform = "translateY(-20px)";
 
     setTimeout(() => {
-      // cambiar palabra
       index = (index + 1) % palabras.length;
       palabra.textContent = palabras[index];
 
-      // resetear animación y aparecer desde abajo
-      palabra.style.transform = "translateY(100%)";
+      // preparar entrada
+      palabra.style.transform = "translateY(20px)";
 
       setTimeout(() => {
-        palabra.style.transform = "translateY(0)";
         palabra.style.opacity = "1";
+        palabra.style.transform = "translateY(0)";
       }, 50);
     }, 400);
-  }, 3000);
+  }
+
+  setInterval(cambiarPalabra, 3000);
 </script>
-<!-- Botón flotante de WhatsApp con mensaje emergente -->
+
+<!-- BOTÓN FLOTANTE CON MENSAJE -->
 <style>
   #whatsapp-float {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    z-index: 999;
-    animation: pulse 2s infinite;
+    z-index: 9999;
+    animation: float 2s ease-in-out infinite;
   }
 
   #whatsapp-float img {
@@ -791,72 +851,77 @@ html, body {
     position: fixed;
     bottom: 90px;
     right: 20px;
-    background: #25d366;
-    color: white;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 12px;
     padding: 15px;
-    border-radius: 15px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    z-index: 998;
-    max-width: 250px;
+    width: 260px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    z-index: 9999;
     display: none;
-    animation: fadeInUp 0.4s ease;
+    animation: fadeIn 0.5s ease-in-out;
   }
 
-  #whatsapp-message strong {
-    display: block;
-    margin-bottom: 8px;
+  #whatsapp-message p {
+    margin: 0 0 10px;
+    font-size: 15px;
+    color: #333;
   }
 
   #whatsapp-message button {
-    background: white;
-    color: #25d366;
+    background-color: #25D366;
+    color: white;
     border: none;
     padding: 8px 12px;
-    border-radius: 10px;
+    border-radius: 6px;
     cursor: pointer;
-    margin-top: 10px;
     font-weight: bold;
   }
 
-  #whatsapp-close {
+  #whatsapp-message .close-msg {
+    background: none;
+    border: none;
+    font-size: 16px;
     position: absolute;
     top: 5px;
     right: 8px;
     cursor: pointer;
-    font-weight: bold;
+    color: #888;
   }
 
-  @keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.08); }
-    100% { transform: scale(1); }
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
   }
 
-  @keyframes fadeInUp {
-    0% {
-      transform: translateY(20px);
-      opacity: 0;
-    }
-    100% {
-      transform: translateY(0);
-      opacity: 1;
-    }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 </style>
 
 <div id="whatsapp-float">
-  <img src="https://cdn-icons-png.flaticon.com/512/2354/2354282.png" alt="WhatsApp" onclick="toggleWhatsappMessage()">
+  <img src="https://cdn-icons-png.flaticon.com/512/2354/2354282.png" alt="WhatsApp" onclick="toggleMessage()">
 </div>
 
 <div id="whatsapp-message">
-  <span id="whatsapp-close" onclick="document.getElementById('whatsapp-message').style.display='none'">×</span>
-  <strong>¿Quieres tener una web así?</strong>
-  ¡Contáctame por WhatsApp!
-  <br>
-  <a href="https://wa.me/51960966903?text=Hola%20Toñito,%20quiero%20una%20web%20como%20esta!" target="_blank">
-    <button>Escríbeme</button>
+  <button class="close-msg" onclick="toggleMessage()">×</button>
+  <p>¿Quieres tener una web así? ¡Contáctame!</p>
+  <a href="https://wa.me/51960966903?text=Hola%20AlbertPe%20quiero%20una%20web%20asi" target="_blank">
+    <button>Hablar por WhatsApp</button>
   </a>
 </div>
+
+<script>
+  function toggleMessage() {
+    const msgBox = document.getElementById('whatsapp-message');
+    msgBox.style.display = msgBox.style.display === 'none' || msgBox.style.display === '' ? 'block' : 'none';
+  }
+</script>
 
 <script>
   function toggleWhatsappMessage() {

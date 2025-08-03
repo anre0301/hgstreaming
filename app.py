@@ -14,7 +14,8 @@ IMAP_SERVER = "imap.gmail.com"
 TITULOS_VALIDOS = [
     "Tu código de acceso temporal de Netflix",
     "Importante: Cómo actualizar tu Hogar con Netflix",
-    "Netflix: Nueva solicitud de inicio de sesión"
+    "Netflix: Nueva solicitud de inicio de sesión",
+    "Completa tu solicitud de restablecimiento de contraseña"
 ]
 
 def decodificar_header(texto):
@@ -46,24 +47,31 @@ def buscar():
         mail.login(EMAIL, APP_PASSWORD)
         mail.select("inbox")
 
-        result, data = mail.search(None, f'(TEXT "{palabra_clave}")')
+        result, data = mail.search(None, 'ALL')
         ids = data[0].split()
 
         if not ids:
-            return jsonify({'mensaje': 'No se encontró ningún correo con esa palabra clave'}), 200
+            return jsonify({'mensaje': 'No se encontró ningún correo'}), 200
 
         ahora = datetime.utcnow()
         hace_15_min = ahora - timedelta(minutes=15)
 
-        for correo_id in reversed(ids):  # Revisar del más reciente al más antiguo
+        for correo_id in reversed(ids):  # Buscar del más reciente al más antiguo
             result, msg_data = mail.fetch(correo_id, '(RFC822)')
             raw_email = msg_data[0][1]
             msg = email.message_from_bytes(raw_email)
 
+            # Decodificar encabezados
             asunto = decodificar_header(msg["Subject"] or "")
+            destinatario = decodificar_header(msg["To"] or "").lower()
+
+            # Validaciones: asunto válido + "para" coincide con correo
             if asunto not in TITULOS_VALIDOS:
                 continue
+            if palabra_clave.lower() not in destinatario:
+                continue
 
+            # Validar tiempo reciente
             fecha_raw = msg["Date"]
             fecha_tuple = email.utils.parsedate_tz(fecha_raw)
             if fecha_tuple:
@@ -75,16 +83,15 @@ def buscar():
 
             remitente = decodificar_header(msg["From"] or "")
 
+            # Extraer cuerpo HTML
             cuerpo_html = None
             if msg.is_multipart():
                 for part in msg.walk():
-                    content_type = part.get_content_type()
-                    if content_type == "text/html":
+                    if part.get_content_type() == "text/html":
                         cuerpo_html = part.get_payload(decode=True).decode(errors="ignore")
                         break
-            else:
-                if msg.get_content_type() == "text/html":
-                    cuerpo_html = msg.get_payload(decode=True).decode(errors="ignore")
+            elif msg.get_content_type() == "text/html":
+                cuerpo_html = msg.get_payload(decode=True).decode(errors="ignore")
 
             if cuerpo_html:
                 mail.logout()
@@ -102,6 +109,7 @@ def buscar():
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
 
 if __name__ == '__main__':
     app.run(debug=True)

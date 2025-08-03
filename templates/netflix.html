@@ -136,47 +136,89 @@
     }
 
     h1 {
-      font-size: 24px;
-      color: #ff4b4b;
-      margin-bottom: 25px;
-    }
+  font-size: 24px;
+  color: #FFFFFF;
+  margin-bottom: 25px;
+  text-shadow: 
+    -1px -1px 0 #000,  
+     1px -1px 0 #000,
+    -1px  1px 0 #000,
+     1px  1px 0 #000;
+}
 
-    .searchBox {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: #2f3640;
-      border-radius: 50px;
-      position: relative;
-      width: 100%;
-      margin: 0 auto 20px;
-    }
 
-    .searchInput {
-      border: none;
-      background: none;
-      outline: none;
-      color: white;
-      font-size: 15px;
-      padding: 24px 46px 24px 26px;
-      width: 100%;
-    }
+.searchBox {
+  display: flex;
+  align-items: center;
+  background: #2f3640; /* fondo de la barra */
+  border-radius: 50px;
+  width: 100%;
+  margin: 0 auto 20px;
+  height: 50px; /* altura uniforme */
+  overflow: hidden; /* para que nada se desborde */
+}
 
-    .searchButton {
-      color: white;
-      position: absolute;
-      right: 8px;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background: linear-gradient(90deg, #2AF598 0%, #009EFD 100%);
-      border: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
+.searchInput {
+  flex: 1;
+  padding: 0 20px;
+  border: none;
+  background: transparent;
+  color: white;
+  font-size: 16px;
+  height: 100%;
+  outline: none;
+}
+
+.searchButton {
+  background-color: #000000; /* negro */
+  border: none;
+  height: 100%; /* mismo alto que el padre */
+  width: 60px;
+  border-radius: 0 50px 50px 0; /* solo redondea la esquina derecha */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.searchBox {
+  display: flex;
+  align-items: center;
+  background: #2f3640; /* fondo de la barra */
+  border-radius: 50px;
+  width: 100%;
+  margin: 0 auto 20px;
+  height: 50px; /* altura uniforme */
+  overflow: hidden; /* para que nada se desborde */
+}
+
+.searchInput {
+  flex: 1;
+  padding: 0 20px;
+  border: none;
+  background: transparent;
+  color: white;
+  font-size: 16px;
+  height: 100%;
+  outline: none;
+}
+
+.searchButton {
+  background-color: #000000; /* negro */
+  border: none;
+  height: 100%; /* mismo alto que el padre */
+  width: 60px;
+  border-radius: 0 50px 50px 0; /* solo redondea la esquina derecha */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.searchButton i {
+  color: #ffffff; /* puedes cambiar a #742286 si quieres resaltar */
+  font-size: 18px;
+}
 
     .searchButton:hover {
       transform: translateY(-3px);
@@ -643,6 +685,11 @@ html, body {
   }
 }
 
+@media (max-width: 768px) {
+  .derecha {
+    margin-top: -100px;
+  }
+}
 
 
   </style>
@@ -686,7 +733,7 @@ html, body {
       <div class="botones">
         <a href="{{ url_for('netflix') }}" class="url">
           <div class="link-plataformas animacionnetflix">
-            <h5 class="tituloplataformas">Netflix</h5>
+            <h5 class="tituloplataformas">NETFLIX</h5>
             <div class="link-description">
               <p class="description">Recupera tu código de acceso temporal.</p>
               <div class="icono-netflix">
@@ -696,11 +743,11 @@ html, body {
           </div>
         </a>
 
-          <a href="#" class="url">
+    <a href="#" class="url">
             <div class="link-plataformas animaciondisney">
-              <h5 class="tituloplataformas">Disney+</h5>
+              <h5 class="tituloplataformas">DISNEY+</h5>
               <div class="link-description">
-                <p class="description">Recupera Acceso único para Disney+ (Español o Inglés)</p>
+                <p class="description">Recupera Acceso único para Disney+</p>
                 <div class="icono-disney">
                   <i class="bi bi-stars"></i>
                 </div>
@@ -710,9 +757,9 @@ html, body {
 
           <a href="#" class="url">
             <div class="link-plataformas animacionprime">
-              <h5 class="tituloplataformas">Prime Video</h5>
+              <h5 class="tituloplataformas">PRIME VIDEO</h5>
               <div class="link-description">
-                <p class="description">Inicio de sesión en Amazon Prime Video (ES / EN)</p>
+                <p class="description">Inicio de sesión en Amazon Prime Video</p>
                 <div class="icono-prime">
                   <i class="bi bi-box-arrow-in-right"></i>
                 </div>
@@ -721,35 +768,47 @@ html, body {
           </a>
         </div>
       </div>
+	  
 
       <!-- Lado derecho -->
 <div class="derecha">
   <div class="container">
-    <h1>Buscar Código Netflix 📧</h1>
+    <h1 style="font-size: 24px; color: #FFFFFF; margin-bottom: 25px; -webkit-text-stroke: 1px black;">📩 Buscar Asuntos de Netflix</h1>
+
     <div class="searchBox">
-      <input class="searchInput" type="text" id="palabra" placeholder="Buscar algo...">
+      <input class="searchInput" type="text" id="palabra" placeholder="Introducir correo y darle en la lupita...">
       <button class="searchButton" onclick="buscar()">
         <i class="fas fa-search"></i>
       </button>
     </div>
-    <div id="resultado"></div>
+
+    <div id="resultado" style="display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 15px; padding-top: 20px;"></div>
   </div>
+</div>
 
   </section>
 
  <footer class="footer">
-  <p class="copyright">© 2025 Derechos Reservados.</p>
+  <p class="copyright">© 2025 Derechos Reservados (@SERVICIOSALBER).</p>
 </footer>
- <script>
+
+<script>
   async function buscar() {
+    const palabra = document.getElementById("palabra").value.trim();
     const resultadoDiv = document.getElementById("resultado");
+
+    if (!palabra) {
+      resultadoDiv.innerHTML = "<span style='color: red;'>⚠️ Introduce un correo válido</span>";
+      return;
+    }
+
     resultadoDiv.innerHTML = "Buscando...";
 
     try {
       const res = await fetch("/buscar", {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ palabra: "Netflix" })  // Valor fijo para buscar sin input
+        body: JSON.stringify({ palabra: palabra })
       });
 
       const data = await res.json();
@@ -762,12 +821,13 @@ html, body {
 
       const correo = data.correo;
       if (!correo) {
-        resultadoDiv.innerText = data.mensaje || "No se encontró ningún correo.";
+        resultadoDiv.innerText = data.mensaje || "No se encontró ningún asunto con dicho correo.";
         return;
       }
 
       const div = document.createElement("div");
       div.className = "card";
+      div.style.minWidth = "300px"; // cada tarjeta ocupa espacio horizontal
       div.innerHTML = `
         <div class="titulo">${correo.asunto}</div>
         <div class="remitente">${correo.remitente}</div>
@@ -781,14 +841,14 @@ html, body {
     }
   }
 </script>
-<!-- Botón flotante de WhatsApp con mensaje emergente -->
+<!-- BOTÓN FLOTANTE CON MENSAJE -->
 <style>
   #whatsapp-float {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    z-index: 999;
-    animation: pulse 2s infinite;
+    z-index: 9999;
+    animation: float 2s ease-in-out infinite;
   }
 
   #whatsapp-float img {
@@ -801,77 +861,108 @@ html, body {
     position: fixed;
     bottom: 90px;
     right: 20px;
-    background: #25d366;
-    color: white;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 12px;
     padding: 15px;
-    border-radius: 15px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    z-index: 998;
-    max-width: 250px;
+    width: 260px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    z-index: 9999;
     display: none;
-    animation: fadeInUp 0.4s ease;
+    animation: fadeIn 0.5s ease-in-out;
   }
 
-  #whatsapp-message strong {
-    display: block;
-    margin-bottom: 8px;
+  #whatsapp-message p {
+    margin: 0 0 10px;
+    font-size: 15px;
+    color: #333;
   }
 
   #whatsapp-message button {
-    background: white;
-    color: #25d366;
+    background-color: #25D366;
+    color: white;
     border: none;
     padding: 8px 12px;
-    border-radius: 10px;
+    border-radius: 6px;
     cursor: pointer;
-    margin-top: 10px;
     font-weight: bold;
   }
 
-  #whatsapp-close {
+  #whatsapp-message .close-msg {
+    background: none;
+    border: none;
+    font-size: 16px;
     position: absolute;
     top: 5px;
     right: 8px;
     cursor: pointer;
-    font-weight: bold;
+    color: #888;
   }
 
-  @keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.08); }
-    100% { transform: scale(1); }
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
   }
 
-  @keyframes fadeInUp {
-    0% {
-      transform: translateY(20px);
-      opacity: 0;
-    }
-    100% {
-      transform: translateY(0);
-      opacity: 1;
-    }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
   }
+  
+  @media (max-width: 768px) {
+  .botones {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .link-plataformas {
+    flex: 1;
+    min-width: auto;
+    padding: 10px 12px;
+    text-align: center;
+  }
+
+  .link-description {
+    display: none !important;
+  }
+
+  .tituloplataformas {
+    font-size: 12px;
+    margin: 0;
+  }
+
+  .url {
+    flex: 1;
+  }
+}
+
 </style>
 
 <div id="whatsapp-float">
-  <img src="https://cdn-icons-png.flaticon.com/512/2354/2354282.png" alt="WhatsApp" onclick="toggleWhatsappMessage()">
+  <img src="https://cdn-icons-png.flaticon.com/512/2354/2354282.png" alt="WhatsApp" onclick="toggleMessage()">
 </div>
 
 <div id="whatsapp-message">
-  <span id="whatsapp-close" onclick="document.getElementById('whatsapp-message').style.display='none'">×</span>
-  <strong>¿Quieres tener una web así?</strong>
-  ¡Contáctame por WhatsApp!
-  <br>
-  <a href="https://wa.me/51960966903?text=Hola%20Toñito,%20quiero%20una%20web%20como%20esta!" target="_blank">
-    <button>Escríbeme</button>
+  <button class="close-msg" onclick="toggleMessage()">×</button>
+  <p>¿Quieres tener una web así? ¡Contáctame!</p>
+  <a href="https://wa.me/51960966903?text=Hola%20AlbertPe%20quiero%20una%20web%20asi" target="_blank">
+    <button>Hablar por WhatsApp</button>
   </a>
 </div>
+</script>
 
 <script>
-  function toggleWhatsappMessage() {
-    const msg = document.getElementById('whatsapp-message');
-    msg.style.display = msg.style.display === 'block' ? 'none' : 'block';
+ function toggleMessage() {
+    const msgBox = document.getElementById('whatsapp-message');
+    msgBox.style.display = msgBox.style.display === 'none' || msgBox.style.display === '' ? 'block' : 'none';
   }
 </script>
 </body>
