@@ -771,5 +771,99 @@ html, body {
     }, 400);
   }, 3000);
 </script>
+<!-- Botón flotante de WhatsApp con mensaje emergente -->
+<style>
+  #whatsapp-float {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 999;
+    animation: pulse 2s infinite;
+  }
+
+  #whatsapp-float img {
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+  }
+
+  #whatsapp-message {
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    background: #25d366;
+    color: white;
+    padding: 15px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    z-index: 998;
+    max-width: 250px;
+    display: none;
+    animation: fadeInUp 0.4s ease;
+  }
+
+  #whatsapp-message strong {
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  #whatsapp-message button {
+    background: white;
+    color: #25d366;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-weight: bold;
+  }
+
+  #whatsapp-close {
+    position: absolute;
+    top: 5px;
+    right: 8px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+    100% { transform: scale(1); }
+  }
+
+  @keyframes fadeInUp {
+    0% {
+      transform: translateY(20px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+</style>
+
+<div id="whatsapp-float">
+  <img src="https://cdn-icons-png.flaticon.com/512/2354/2354282.png" alt="WhatsApp" onclick="toggleWhatsappMessage()">
+</div>
+
+<div id="whatsapp-message">
+  <span id="whatsapp-close" onclick="document.getElementById('whatsapp-message').style.display='none'">×</span>
+  <strong>¿Quieres tener una web así?</strong>
+  ¡Contáctame por WhatsApp!
+  <br>
+  <a href="https://wa.me/51960966903?text=Hola%20Toñito,%20quiero%20una%20web%20como%20esta!" target="_blank">
+    <button>Escríbeme</button>
+  </a>
+</div>
+
+<script>
+  function toggleWhatsappMessage() {
+    const msg = document.getElementById('whatsapp-message');
+    msg.style.display = msg.style.display === 'block' ? 'none' : 'block';
+  }
+</script>
+
 </body>
 </html>
