@@ -34,10 +34,6 @@ def index():
 @app.route('/netflix')
 def netflix():
     return render_template('netflix.html')
-@app.route('/')
-
-def inicio():
-    return render_template('index.html')
 
 @app.route('/buscar', methods=['POST'])
 def buscar():
@@ -57,7 +53,7 @@ def buscar():
             return jsonify({'mensaje': 'No se encontró ningún correo con esa palabra clave'}), 200
 
         ahora = datetime.utcnow()
-        hace_5_min = ahora - timedelta(minutes=5)
+        hace_15_min = ahora - timedelta(minutes=15)
 
         for correo_id in reversed(ids):  # Revisar del más reciente al más antiguo
             result, msg_data = mail.fetch(correo_id, '(RFC822)')
@@ -72,7 +68,7 @@ def buscar():
             fecha_tuple = email.utils.parsedate_tz(fecha_raw)
             if fecha_tuple:
                 fecha_email = datetime.utcfromtimestamp(email.utils.mktime_tz(fecha_tuple))
-                if fecha_email < hace_5_min:
+                if fecha_email < hace_15_min:
                     continue
             else:
                 continue
