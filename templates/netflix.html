@@ -832,11 +832,14 @@ html, body {
       div.className = "card";
       div.style.minWidth = "300px"; // cada tarjeta ocupa espacio horizontal
       div.innerHTML = `
-        <div class="titulo">${correo.asunto}</div>
-        <div class="remitente">${correo.remitente}</div>
-        <div class="fecha">${correo.fecha}</div>
-        <div class="cuerpo">${correo.cuerpo_html}</div>
-      `;
+      <div class="titulo">${correo.asunto}</div>
+      <div class="remitente">${correo.remitente}</div>
+      <div class="fecha">${correo.fecha}</div>
+      <div class="cuerpo">${correo.cuerpo_html}</div>
+      <div style="margin-top:10px; font-size: 12px; color: gray;">
+      Obtenido desde: <strong>${correo.cuenta_encontrada}</strong>
+  </div>
+`;
 
       resultadoDiv.appendChild(div);
     } catch (error) {
