@@ -25,7 +25,8 @@ TITULOS_VALIDOS = [
     "Tu código de acceso temporal de Netflix",
     "Importante: Cómo actualizar tu Hogar con Netflix",
     "Netflix: Nueva solicitud de inicio de sesión",
-    "Completa tu solicitud de restablecimiento de contraseña"
+    "Completa tu solicitud de restablecimiento de contraseña",
+    "Netflix: Tu código de inicio de sesión"
 ]
 
 def decodificar_header(texto):
