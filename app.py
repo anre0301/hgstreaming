@@ -66,7 +66,7 @@ def buscar():
 
                 result, data = mail.search(None, 'ALL')
                 ids = data[0].split()
-                ultimos_ids = ids[-5:]
+                ultimos_ids = ids[-3:]
 
                 if not ids:
                     print(f"📭 No hay correos en {cuenta['email']}")
