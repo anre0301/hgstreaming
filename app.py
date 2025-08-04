@@ -4,6 +4,7 @@ import email
 from email.header import decode_header
 from datetime import datetime, timedelta
 import email.utils
+from bs4 import BeautifulSoup
 
 app = Flask(__name__)
 
@@ -56,6 +57,7 @@ def buscar():
 
     try:
         for cuenta in CUENTAS:
+            print(f"🔍 Revisando cuenta: {cuenta['email']}")
             try:
                 mail = imaplib.IMAP4_SSL(cuenta["imap"])
                 mail.login(cuenta["email"], cuenta["password"])
@@ -63,14 +65,22 @@ def buscar():
 
                 result, data = mail.search(None, 'ALL')
                 ids = data[0].split()
+                ultimos_ids = ids[-5:]
 
-                for correo_id in reversed(ids):
+                if not ids:
+                    print(f"📭 No hay correos en {cuenta['email']}")
+                    mail.logout()
+                    continue
+
+                for correo_id in reversed(ultimos_ids):
                     result, msg_data = mail.fetch(correo_id, '(RFC822)')
                     raw_email = msg_data[0][1]
                     msg = email.message_from_bytes(raw_email)
 
                     asunto = decodificar_header(msg["Subject"] or "")
                     destinatario = decodificar_header(msg["To"] or "").lower()
+
+                    print(f"✉️ Asunto: {asunto} | Para: {destinatario}")
 
                     if asunto not in TITULOS_VALIDOS:
                         continue
@@ -98,13 +108,26 @@ def buscar():
                         cuerpo_html = msg.get_payload(decode=True).decode(errors="ignore")
 
                     if cuerpo_html:
+                        # 🧼 Limpiar HTML para extraer solo la parte útil
+                        soup = BeautifulSoup(cuerpo_html, 'html.parser')
+                        tabla_principal = soup.find('table')
+
+                        if tabla_principal:
+                            for tag in tabla_principal.find_all(string=True):
+                                if any(p in tag.lower() for p in ["centro de ayuda", "netflix te envió", "configuración de notificaciones"]):
+                                    tag.extract()
+                            html_limpio = str(tabla_principal)
+                        else:
+                            html_limpio = cuerpo_html
+
+                        print(f"✅ Código encontrado en: {cuenta['email']}")
                         mail.logout()
                         return jsonify({
                             "correo": {
                                 "asunto": asunto,
                                 "remitente": remitente,
                                 "fecha": fecha_raw,
-                                "cuerpo_html": cuerpo_html,
+                                "cuerpo_html": html_limpio,
                                 "cuenta_encontrada": cuenta["email"]
                             }
                         })
@@ -112,14 +135,15 @@ def buscar():
                 mail.logout()
 
             except Exception as cuenta_error:
-                print(f"Error con cuenta {cuenta['email']}: {cuenta_error}")
+                print(f"❌ Error con cuenta {cuenta['email']}: {cuenta_error}")
                 continue
 
+        print("🔴 No se encontró ningún código válido en ninguna cuenta.")
         return jsonify({'mensaje': 'No se encontró ningún código reciente válido'}), 200
 
     except Exception as e:
+        print("🚨 Error general:", str(e))
         return jsonify({'error': str(e)}), 500
-
 
 if __name__ == '__main__':
     app.run(debug=True)
