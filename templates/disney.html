@@ -385,18 +385,23 @@
 }
 
 
-/* Clase común para resaltar botón activo */
+
+/* Netflix */
 .link-plataformas.activo {
   border: 2px solid #ff4b4b;
   box-shadow: 0 0 15px #ff4b4b;
-  transform: scale(1.05);
-  transition: all 0.3s ease;
 }
 
-/* Si es PRIME VIDEO, cambia color del borde */
+/* Prime */
 .animacionprime.activo {
   border-color: #00a8e1;
   box-shadow: 0 0 15px #00a8e1;
+}
+
+/* Disney */
+.animaciondisney.activo {
+  border-color: #113ccf;
+  box-shadow: 0 0 15px #113ccf;
 }
 
 .botones {
@@ -734,6 +739,7 @@ html, body {
   word-wrap: break-word;
 }
 
+
 @media screen and (max-width: 600px) {
   .container {
     width: 98vw;               /* ✅ usa solo hasta el 90% de la pantalla */
@@ -753,21 +759,6 @@ html, body {
     max-width: 100vw !important;
   }
 }
-
-/* Clase común para resaltar botón activo */
-.link-plataformas.activo {
-  border: 2px solid #ff4b4b;
-  box-shadow: 0 0 15px #ff4b4b;
-  transform: scale(1.05);
-  transition: all 0.3s ease;
-}
-
-/* Si es PRIME VIDEO, cambia color del borde */
-.animacionprime.activo {
-  border-color: #00a8e1;
-  box-shadow: 0 0 15px #00a8e1;
-}
-
 
 
 
