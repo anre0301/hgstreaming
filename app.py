@@ -17,8 +17,8 @@ CUENTAS = [
         "imap": "imap.gmail.com"
     },
     {
-        "email": "albertcuarto349@gmail.com", 
-        "password": "ctdfsnldmcauhnmx",
+        "email": "axc983744@gmail.com", 
+        "password": "xxepmhtylqxemsjv",
         "imap": "imap.gmail.com"
     }
 ]
