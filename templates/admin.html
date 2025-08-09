@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel de Administración</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #121212;
+            color: white;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        h1 {
+            color: #00ffd5;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            background: #1e1e1e;
+            padding: 15px;
+            border-radius: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        input {
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+    flex: 1 1 auto;
+    background: #2a2a2a;
+    color: white;
+    font-size: 14px;
+    height: 38px; /* 👈 altura fija */
+}
+
+        button {
+            padding: 10px 15px;
+            background: #00ffd5;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: black;
+            font-weight: bold;
+            transition: background 0.2s ease;
+        }
+
+        button:hover {
+            background: #00c0a3;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            background: #1e1e1e;
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #333;
+        }
+
+        th {
+            background: #222;
+            color: #00ffd5;
+        }
+
+        tr:hover {
+            background: #2a2a2a;
+        }
+
+        .btn-delete {
+            background: red;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn-delete:hover {
+            background: darkred;
+        }
+
+        /* Responsivo */
+      @media (max-width: 600px) {
+    form {
+        flex-direction: column;
+    }
+
+    input, button {
+        width: 100%;
+        height: 38px; /* 👈 más compacto en móvil */
+        font-size: 14px;
+    }
+}
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Administrar Cuentas</h1>
+
+    <form id="form-agregar">
+        <input type="email" id="email" placeholder="Correo" required>
+        <input type="text" id="password" placeholder="Clave" required>
+        <button type="submit">Agregar Cuenta</button>
+    </form>
+
+    <div class="table-container">
+        <table id="tabla-cuentas">
+            <thead>
+                <tr>
+                    <th>Correo</th>
+                    <th>Clave</th>
+                    <th>IMAP</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+async function cargarCuentas() {
+    const res = await fetch('/api/cuentas');
+    const cuentas = await res.json();
+    const tbody = document.querySelector('#tabla-cuentas tbody');
+    tbody.innerHTML = '';
+    cuentas.forEach(cuenta => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${cuenta.email}</td>
+            <td>${cuenta.password}</td>
+            <td>${cuenta.imap}</td>
+            <td><button class="btn-delete" onclick="eliminarCuenta('${cuenta.email}')">Eliminar</button></td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+async function agregarCuenta(email, password) {
+    const formData = new FormData();
+    formData.append('email', email);
+    formData.append('password', password);
+    formData.append('imap', 'imap.gmail.com');
+
+    const res = await fetch('/api/cuentas', { method: 'POST', body: formData });
+    if (res.ok) {
+        cargarCuentas();
+    } else {
+        alert('Error al agregar cuenta');
+    }
+}
+
+async function eliminarCuenta(email) {
+    const res = await fetch(`/api/cuentas/${encodeURIComponent(email)}`, { method: 'DELETE' });
+    if (res.ok) {
+        cargarCuentas();
+    } else {
+        alert('Error al eliminar cuenta');
+    }
+}
+
+document.getElementById('form-agregar').addEventListener('submit', e => {
+    e.preventDefault();
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    agregarCuenta(email, password);
+    e.target.reset();
+});
+
+cargarCuentas();
+</script>
+
+</body>
+</html>

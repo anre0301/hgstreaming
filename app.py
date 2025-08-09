@@ -6,22 +6,14 @@ from datetime import datetime, timedelta
 import email.utils
 from bs4 import BeautifulSoup
 from concurrent.futures import ThreadPoolExecutor
+from database import init_db, get_cuentas, add_cuenta, delete_cuenta
 
 
 app = Flask(__name__)
+init_db()
 
-CUENTAS = [
-    {
-        "email": "darienmurillodorsal@gmail.com",
-        "password": "hwkjziivbocffrsw",
-        "imap": "imap.gmail.com"
-    },
-    {
-        "email": "axc983744@gmail.com", 
-        "password": "xxepmhtylqxemsjv",
-        "imap": "imap.gmail.com"
-    }
-]
+def get_cuentas_actuales():
+    return get_cuentas()
 
 TITULOS_VALIDOS = [
     "Tu código de acceso temporal de Netflix",
@@ -140,7 +132,7 @@ def buscar():
     hace_15_min = ahora - timedelta(minutes=15)
 
     with ThreadPoolExecutor() as executor:
-        resultados = list(executor.map(lambda cuenta: revisar_cuenta(cuenta, palabra_clave, hace_15_min), CUENTAS))
+        resultados = list(executor.map(lambda cuenta: revisar_cuenta(cuenta, palabra_clave, hace_15_min), get_cuentas_actuales()))
 
     for resultado in resultados:
         if resultado:
@@ -227,7 +219,7 @@ def buscar_prime():
         return None
 
     with ThreadPoolExecutor() as executor:
-        resultados = list(executor.map(revisar_cuenta_prime, CUENTAS))
+        resultados = list(executor.map(revisar_cuenta_prime, get_cuentas_actuales()))
 
     for resultado in resultados:
         if resultado:
@@ -313,13 +305,37 @@ def buscar_disney():
         return None
 
     with ThreadPoolExecutor() as executor:
-        resultados = list(executor.map(revisar_cuenta_disney, CUENTAS))
+        resultados = list(executor.map(revisar_cuenta_disney, get_cuentas_actuales()))
 
     for resultado in resultados:
         if resultado:
             return jsonify({"correo": resultado})
 
     return jsonify({'mensaje': 'No se encontró ningún código reciente válido'}), 200
+    
+    
+@app.route('/admin')
+def admin():
+    return render_template('admin.html')
+
+@app.route('/api/cuentas', methods=['GET'])
+def listar_cuentas():
+    return jsonify(get_cuentas())
+
+@app.route('/api/cuentas', methods=['POST'])
+def agregar_cuenta():
+    email = request.form.get('email')
+    password = request.form.get('password')
+    imap = "imap.gmail.com"  # Valor por defecto
+    if not email or not password:
+        return jsonify({'error': 'Datos incompletos'}), 400
+    add_cuenta(email, password, imap)
+    return jsonify({'mensaje': 'Cuenta agregada'}), 201
+
+@app.route('/api/cuentas/<email>', methods=['DELETE'])
+def borrar_cuenta(email):
+    delete_cuenta(email)
+    return jsonify({'mensaje': 'Cuenta eliminada'})
 
 
 if __name__ == '__main__':
